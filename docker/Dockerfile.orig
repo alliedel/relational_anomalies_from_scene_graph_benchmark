@@ -10,8 +10,6 @@ RUN apt-get update -y \
  && apt-get install -y apt-utils git curl ca-certificates bzip2 cmake tree htop bmon iotop g++ \
  && apt-get install -y libglib2.0-0 libsm6 libxext6 libxrender-dev libyaml-dev vim zsh wget htop tmux
 
-RUN apt install -y libgl1-mesa-glx
-
 # Install Miniconda
 RUN curl -so /miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
  && chmod +x /miniconda.sh \
@@ -40,7 +38,7 @@ RUN python -m nltk.downloader punkt
 
 # Install latest PyTorch 1.7.1
 ARG CUDA
-RUN conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=${CUDA} -c pytorch \
+RUN conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=10.1 -c pytorch \
  && conda clean -ya
 RUN conda install -y -c conda-forge timm einops
 
@@ -68,4 +66,3 @@ CMD [ "zsh" ]
 #  && python setup.py build develop
 
 # WORKDIR /scene_graph_benchmark
-

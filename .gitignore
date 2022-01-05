@@ -1,4 +1,5 @@
 # compilation and distribution
+azcopy_installation
 __pycache__
 _ext
 *.pyc
@@ -35,9 +36,11 @@ dist/
 /datasets
 /models
 /output
+/figs/
 /exps
 .ptconfig
 .ptignore
 pretrained_model/
 run_philly.py
 vrd_philly_tools_submit.yaml
+demo/*.jpg

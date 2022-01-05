@@ -1,5 +1,8 @@
 FROM scene_graph_benchmark
 
+# Install OpenCV #allie: unclear if this is needed with the pip installation earlier
+#RUN conda install -y opencv -c menpo \
+# && conda clean -ya
 RUN python -c "import torch; print(torch.cuda.device_count())"
 RUN nvcc --version
 RUN ls /usr/local/
@@ -15,8 +18,9 @@ WORKDIR /notebooks
 # install PyTorch Detection
 ARG FORCE_CUDA="1"
 ENV FORCE_CUDA=${FORCE_CUDA}
-
-WORKDIR /scene_graph_benchmark
+RUN git clone https://github.com/facebookresearch/maskrcnn-benchmark.git \
+ && cd maskrcnn-benchmark \
+ && python setup.py build develop
 
 RUN jupyter notebook --generate-config
 
@@ -24,4 +28,5 @@ ENV CONFIG_PATH="/root/.jupyter/jupyter_notebook_config.py"
 
 COPY "jupyter_notebook_config.py" ${CONFIG_PATH}
 
-ENTRYPOINT ["/scene_graph_benchmark/docker/docker-jupyter/entrypoint.sh"]
+ENTRYPOINT ["sh", "-c", "jupyter notebook --allow-root -y --no-browser --ip=0.0.0.0 --config=${CONFIG_PATH}"]
+
